@@ -4,10 +4,32 @@ const { Schema, model } = mongoose
 
 const RecipeSchema = new Schema(
   {
-    recipeName: { type: String, required: true },
-    description: { type: String, required: true },
+    dishName: { type: String, required: true },
+    authorName: { type: String, required: true },
+    pictures: { type: String, required: false },
+    ingredients: { type: String, required: false },
+    prepSteps: { type: String, required: false },
+    personalNote: { type: String, required: false },
+    prepTime: { type: Number, required: false },
+    cookingTime: { type: Number, required: false },
+    portions: { type: Number, required: false },
+    lastMade: { type: Date, required: false },
+    prepMethods: {
+      type: String,
+      required: false,
+      enum: [
+        'oven',
+        'stove',
+        'robot',
+        'deep-fry',
+        'air-fry',
+        'multicooker',
+        'BBQ',
+        'sous-vide',
+        'microwave',
+      ],
+    },
 
-    image: { type: String, required: false },
     // language: {
     //   type: String,
     //   default: 'English',

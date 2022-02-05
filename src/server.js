@@ -19,9 +19,9 @@ server.use(express.json())
 
 //***************** ROUTES ****************/
 
-server.use('/users', usersRouter)
+//server.use('/users', usersRouter)
 // server.use('/recipes', recipesRouter)
-// server.use('/carts', cartsRouter)
+
 
 //***************** ERROR HANDLERS ****************/
 

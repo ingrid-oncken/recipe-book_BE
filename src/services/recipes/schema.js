@@ -13,7 +13,13 @@ const RecipeSchema = new Schema(
     prepTime: { type: Number, required: false },
     cookingTime: { type: Number, required: false },
     portions: { type: Number, required: false },
+    difficulty: { type: Number, required: false },
     lastMade: { type: Date, required: false },
+    cathegory: {
+      type: String,
+      required: false,
+      enum: ['appetizer', 'main-course', 'deseart'],
+    },
     prepMethods: {
       type: String,
       required: false,
@@ -29,22 +35,6 @@ const RecipeSchema = new Schema(
         'microwave',
       ],
     },
-
-    // language: {
-    //   type: String,
-    //   default: 'English',
-    //   required: true,
-    //   enum: ['English', 'Português', 'Italiano', 'Español', 'Deutsch'],
-    // },
-    // category: {
-    //   type: String,
-    //   default: 'VCDS®',
-    //   required: true,
-    //   enum: ['VCDS®', 'HEX-V2', 'HEX-NET', 'HEX-NET® Pro', 'Software'],
-    // },
-    // price: { type: Number, required: true },
-    // stock: { type: Number, required: false },
-    // available: { type: Boolean, required: true },
   },
   { timestamps: true }
 )

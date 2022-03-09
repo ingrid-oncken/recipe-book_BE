@@ -2,6 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import listEndpoints from 'express-list-endpoints'
+import usersRouter from './services/users/index.js'
+import recipesRouter from './services/recipes/index.js'
 
 import {
   unauthorizedHandler,
@@ -19,9 +21,8 @@ server.use(express.json())
 
 //***************** ROUTES ****************/
 
-//server.use('/users', usersRouter)
-// server.use('/recipes', recipesRouter)
-
+server.use('/users', usersRouter)
+server.use('/recipes', recipesRouter)
 
 //***************** ERROR HANDLERS ****************/
 
@@ -30,12 +31,23 @@ server.use(forbidenHandler)
 server.use(catchAllHandler)
 
 console.table(listEndpoints(server, port))
-mongoose.connect(process.env.MONGO_CONNECTION)
+//mongoose.connect(process.env.MONGO_CONNECTION)
 
-mongoose.connection.on('connected', () => {
-  console.log('🐒 Mongo Connected 👍')
-  server.listen(port, () => {
-    console.log(`🏃Server running on port 🚪${port}`)
-  })
+// mongoose.connection.on('connected', () => {
+//   console.log('🐒 Mongo Connected 👍')
+//   server.listen(port, () => {
+//     console.log(`🏃Server running on port 🚪${port}`)
+//   })
+// })
+
+server.listen(port, async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_CONNECTION, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`✅ Server is running on ${port}  and connected to db`);
+  } catch (error) {
+    console.log("Db connection is failed ", error);
+  }
 })
-

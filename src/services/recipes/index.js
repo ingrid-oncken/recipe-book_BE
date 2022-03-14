@@ -13,7 +13,7 @@ recipesRouter.post('/', JWTAuthMiddleware, async (req, res, next) => {
     res
       .status(201)
       .send(
-        `The new recipe ${newRecipe.recipeName.toUpperCase()} was added with the ID: ${_id}`
+        `The new recipe ${newRecipe.dishName.toUpperCase()} was added to the DB with the ID: ${_id}`
       )
   } catch (error) {
     console.log(error)
@@ -32,16 +32,23 @@ recipesRouter.get('/', async (req, res, next) => {
 })
 recipesRouter.get('/:id', async (req, res, next) => {
   try {
+    const recipeId = req.params.id
+    const recipe = await RecipeModel.findById(recipeId)
+
+    if (recipe) {
+      res.send(recipe)
+    } else {
+      console.log(`this is ELSE clg`, createHttpError(404))
+      next(
+        res.status(404).send({ message: 'HEEEELP!!! ' })
+        // createHttpError(404, `The recipe with id ${recipeId} was not found!`)
+      )
+    }
   } catch (error) {
     next(error)
   }
 })
-recipesRouter.get('/:id', async (req, res, next) => {
-  try {
-  } catch (error) {
-    next(error)
-  }
-})
+
 recipesRouter.put('/:id', async (req, res, next) => {
   try {
   } catch (error) {

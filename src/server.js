@@ -9,6 +9,9 @@ import {
   unauthorizedHandler,
   forbidenHandler,
   catchAllHandler,
+  badRequestHandler,
+  notFoundHandler,
+  
 } from './errorHandlers.js'
 
 const server = express()
@@ -29,25 +32,28 @@ server.use('/recipes', recipesRouter)
 server.use(unauthorizedHandler)
 server.use(forbidenHandler)
 server.use(catchAllHandler)
+server.use(badRequestHandler)
+server.use(notFoundHandler)
 
 console.table(listEndpoints(server, port))
-//mongoose.connect(process.env.MONGO_CONNECTION)
+mongoose.connect(process.env.MONGO_CONNECTION)
 
-// mongoose.connection.on('connected', () => {
-//   console.log('🐒 Mongo Connected 👍')
-//   server.listen(port, () => {
-//     console.log(`🏃Server running on port 🚪${port}`)
-//   })
-// })
-
-server.listen(port, async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_CONNECTION, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log(`✅ Server is running on ${port}  and connected to db`);
-  } catch (error) {
-    console.log("Db connection is failed ", error);
-  }
+mongoose.connection.on('connected', () => {
+  console.log('🐒 Mongo Connected 👍')
+  server.listen(port, () => {
+    console.log(`🏃Server running on port 🚪${port}`)
+  })
 })
+
+// server.listen(port, async () => {
+//   try {
+//     await mongoose.connect(process.env.MONGO_CONNECTION, {
+
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//     console.log(`🏃Server running on port 🚪${port} and connected to db`);
+//   } catch (error) {
+//     console.log("DB connection has failed ", error);
+//   }
+// })

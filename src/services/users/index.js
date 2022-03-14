@@ -10,7 +10,7 @@ usersRouter.post('/register', async (req, res, next) => {
   try {
     const newUser = new UserModel(req.body)
     const { _id } = await newUser.save()
-   
+
     res
       .status(201)
       .send(
@@ -18,19 +18,10 @@ usersRouter.post('/register', async (req, res, next) => {
       )
   } catch (error) {
     next(error)
+
+    next(error)
   }
 })
-
-// usersRouter.get('/', JWTAuthMiddleware, async (req, res, next) => {
-//   try {
-//     const users = await UserModel.find()
-
-//     res.send(users)
-//   } catch (error) {
-//     next(error)
-//   }
-// })
-
 
 // /me are the personal routes accessed by the user
 //attaching the CURRENT LOGGED USER to the request
@@ -85,7 +76,7 @@ usersRouter.post('/login', async (req, res, next) => {
     const { email, password } = req.body
     console.log(`this is req.body ${req.body}`)
     const user = await UserModel.checkCredentials(email, password)
-    console.log(user);
+    console.log(user)
 
     if (user) {
       const accessToken = await JWTAuthenticate(user)

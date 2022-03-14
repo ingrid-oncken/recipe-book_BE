@@ -8,9 +8,9 @@
     "atob": "^2.1.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
-    "create-http-error": "^1.0.3",
     "express": "^4.17.2",
     "express-list-endpoints": "^6.0.0",
+    "http-errors": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.0",
     "query-to-mongo": "^0.10.1"

@@ -1,6 +1,6 @@
 import express from 'express'
 import RecipeModel from './schema.js'
-import createHttpError from 'http-errors'
+import createError from 'http-errors'
 import { JWTAuthMiddleware } from '../../auth/token.js'
 
 const recipesRouter = express.Router()
@@ -38,10 +38,10 @@ recipesRouter.get('/:id', async (req, res, next) => {
     if (recipe) {
       res.send(recipe)
     } else {
-      console.log(`this is ELSE clg`, createHttpError(404))
+      //console.log(`this is ELSE clg`, createError(401))
       next(
-        res.status(404).send({ message: 'HEEEELP!!! ' })
-        // createHttpError(404, `The recipe with id ${recipeId} was not found!`)
+        //res.status(404).send({ message: 'HEEEELP!!! ' })
+        createError(404, `The recipe with id ${recipeId} was not found!`)
       )
     }
   } catch (error) {

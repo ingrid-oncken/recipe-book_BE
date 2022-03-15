@@ -47,6 +47,21 @@ recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
 
 recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {
+    const recipeId = req.params.id
+    const updatedRecipe = await RecipeModel.findByIdAndUpdate(recipeId, )
+
+    if (!updatedRecipe) {
+      next(
+        createError(
+          404,
+          `The recipe with id ${recipeId} was not found to be updated!`
+        )
+      )
+    } else {
+      res
+        .status(200)
+        .send(`The recipe with id ${recipeId} was sucessfully deleted!`)
+    }
   } catch (error) {
     next(error)
   }

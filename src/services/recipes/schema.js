@@ -51,7 +51,6 @@ const RecipeSchema = new Schema(
     ingredients: { type: String, required: false },
     prepSteps: { type: String, required: false },
     personalNote: { type: String, required: false },
-    difficulty: { type: Number, required: false },
     pictures: { type: String, required: false },
   },
   { timestamps: true }

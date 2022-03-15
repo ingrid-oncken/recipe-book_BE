@@ -1,5 +1,5 @@
 export const badRequestHandler = (err, req, res, next) => {
-  console.log(err)
+  console.log(err, 'CLG line 2 at errorHandlers')
   if (err.status === 400 || err.name === 'ValidationError') {
     res.status(400).send(err.error)
   } else {

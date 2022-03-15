@@ -13,7 +13,7 @@ recipesRouter.post('/', JWTAuthMiddleware, async (req, res, next) => {
     res
       .status(201)
       .send(
-        `The new recipe ${newRecipe.dishName.toUpperCase()} was added to the DB with the ID: ${_id}`
+        `The new recipe ${newRecipe.recipeTitle.toUpperCase()} was added to the DB with the ID: ${_id}`
       )
   } catch (error) {
     console.log(error)

@@ -6,13 +6,13 @@ const RecipeSchema = new Schema(
   {
     recipeTitle: { type: String, required: true },
     authorName: { type: String, required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: false },
     cathegory: {
       type: String,
       required: false,
       enum: ['Brekfast', 'Salad', 'Lunch/Dinner', 'Soup', 'Snack', 'Desseart'],
     },
     nPortions: { type: Number, required: false },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     prepTime: { type: Number, required: false },
     totalTime: { type: Number, required: false },
     prepMethods: {

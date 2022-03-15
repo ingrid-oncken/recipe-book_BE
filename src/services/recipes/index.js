@@ -1,6 +1,5 @@
 import express from 'express'
 import RecipeModel from './schema.js'
-//import createError from 'http-errors'
 import { JWTAuthMiddleware } from '../../auth/token.js'
 import createError from 'http-errors'
 
@@ -35,14 +34,14 @@ recipesRouter.get('/:id', async (req, res, next) => {
   try {
     const recipeId = req.params.id
     const recipe = await RecipeModel.findById(recipeId)
-    console.log('this is clg of recipe line 37', recipe)
+    //console.log('this is clg of recipe line 37', recipe)
 
-    if (recipe) {
-      res.send(recipe)
-    } else {
-      //console.log(`this is ELSE clg`, createError(401))
-
+    if (!recipe) {
+      console.log('IF inside !recipe')
       next(createError(404, `The recipe with id was not found!`))
+    } else {
+      //console.log(`this is ELSE clg `, recipe)
+      res.send(recipe)
     }
   } catch (error) {
     next(error)

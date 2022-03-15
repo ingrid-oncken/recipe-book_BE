@@ -30,19 +30,17 @@ export const forbidenHandler = (err, req, res, next) => {
 export const notFoundHandler = (err, req, res, next) => {
   console.log(err)
   if (err.status === 404) {
-    res
-      .status(404)
-      .send({ status: 'error', message: err.message || '404: Not found' })
+    res.status(err.status).send({ message: err.message || 'Not found!' })
   } else {
     next(err)
   }
 }
 
 export const catchAllHandler = (err, req, res, next) => {
-  if (err.status === 500) {
-    res.status(500).send({
-      status: 'error',
-      message: '500: Generic Server Error',
-    })
-  }
+  console.log(err)
+
+  res.status(500).send({
+    status: 'error',
+    message: '500: Generic Server Error',
+  })
 }

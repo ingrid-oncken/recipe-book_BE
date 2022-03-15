@@ -10,8 +10,7 @@ import {
   forbidenHandler,
   catchAllHandler,
   badRequestHandler,
-  // notFoundHandler,
-
+  notFoundHandler,
 } from './errorHandlers.js'
 
 const server = express()
@@ -31,9 +30,9 @@ server.use('/recipes', recipesRouter)
 
 server.use(unauthorizedHandler)
 server.use(forbidenHandler)
-server.use(catchAllHandler)
+server.use(notFoundHandler)
 server.use(badRequestHandler)
-//server.use(notFoundHandler)
+server.use(catchAllHandler)
 
 console.table(listEndpoints(server, port))
 mongoose.connect(process.env.MONGO_CONNECTION)

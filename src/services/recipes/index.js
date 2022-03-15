@@ -33,12 +33,12 @@ recipesRouter.get('/', JWTAuthMiddleware, async (req, res, next) => {
 recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {
     const recipeId = req.params.id
-    const recipe = await RecipeModel.findById(recipeId)
+    const recipe = await RecipeModel.findById(recipeId) //here I can pass a mongo query and find it by ID
 
     if (!recipe) {
       next(createError(404, `The recipe with id ${recipeId} was not found!`))
     } else {
-      res.send(recipe)
+      res.status(200).send(recipe)
     }
   } catch (error) {
     next(error)
@@ -47,6 +47,20 @@ recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
 
 recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {
+  } catch (error) {
+    next(error)
+  }
+})
+recipesRouter.delete('/:id', JWTAuthMiddleware, async (req, res, next) => {
+  try {
+    const recipeId = req.params.id
+    const deletedRecipe = await RecipeModel.findByIdAndDelete(recipeId)
+
+    if (!deletedRecipe) {
+      next(createError(404, `The recipe with id ${recipeId} was not found to be deleted!`))
+    } else {
+      res.status(200).send(`The recipe with id ${recipeId} was sucessfully deleted!`)
+    }
   } catch (error) {
     next(error)
   }

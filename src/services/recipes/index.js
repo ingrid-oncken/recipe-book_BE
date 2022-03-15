@@ -20,7 +20,7 @@ recipesRouter.post('/', JWTAuthMiddleware, async (req, res, next) => {
     next(error)
   }
 })
-recipesRouter.get('/', async (req, res, next) => {
+recipesRouter.get('/', JWTAuthMiddleware, async (req, res, next) => {
   try {
     const recipes = await RecipeModel.find({})
 
@@ -30,7 +30,7 @@ recipesRouter.get('/', async (req, res, next) => {
     next(error)
   }
 })
-recipesRouter.get('/:id', async (req, res, next) => {
+recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {
     const recipeId = req.params.id
     const recipe = await RecipeModel.findById(recipeId)
@@ -45,7 +45,7 @@ recipesRouter.get('/:id', async (req, res, next) => {
   }
 })
 
-recipesRouter.put('/:id', async (req, res, next) => {
+recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {
   } catch (error) {
     next(error)

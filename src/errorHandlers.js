@@ -1,4 +1,5 @@
 export const badRequestHandler = (err, req, res, next) => {
+  console.log(err)
   if (err.status === 400 || err.name === 'ValidationError') {
     res.status(400).send(err.error)
   } else {
@@ -7,6 +8,7 @@ export const badRequestHandler = (err, req, res, next) => {
 }
 
 export const unauthorizedHandler = (err, req, res, next) => {
+  console.log(err)
   if (err.status === 401) {
     res.status(401).send({
       status: 'error',
@@ -17,6 +19,7 @@ export const unauthorizedHandler = (err, req, res, next) => {
   }
 }
 export const forbidenHandler = (err, req, res, next) => {
+  console.log(err)
   if (err.status === 403) {
     res.status(403).send({
       status: 'error',
@@ -38,7 +41,6 @@ export const notFoundHandler = (err, req, res, next) => {
 
 export const catchAllHandler = (err, req, res, next) => {
   console.log(err)
-
   res.status(500).send({
     status: 'error',
     message: '500: Generic Server Error',

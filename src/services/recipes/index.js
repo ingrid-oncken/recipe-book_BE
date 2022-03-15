@@ -60,7 +60,7 @@ recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
     } else {
       res
         .status(200)
-        .send(`The recipe with id ${recipeId} was sucessfully deleted!`)
+        .send(`The recipe with id ${recipeId} was sucessfully updated!`)
     }
   } catch (error) {
     next(error)

@@ -34,13 +34,10 @@ recipesRouter.get('/:id', async (req, res, next) => {
   try {
     const recipeId = req.params.id
     const recipe = await RecipeModel.findById(recipeId)
-    //console.log('this is clg of recipe line 37', recipe)
 
     if (!recipe) {
-      console.log('IF inside !recipe')
-      next(createError(404, `The recipe with id was not found!`))
+      next(createError(404, `The recipe with id ${recipeId} was not found!`))
     } else {
-      //console.log(`this is ELSE clg `, recipe)
       res.send(recipe)
     }
   } catch (error) {

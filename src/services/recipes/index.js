@@ -48,7 +48,13 @@ recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
 recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {
     const recipeId = req.params.id
-    const updatedRecipe = await RecipeModel.findByIdAndUpdate(recipeId, )
+    const updatedRecipe = await RecipeModel.findByIdAndUpdate(
+      recipeId,
+      req.body,
+      {
+        new: true,
+      }
+    )
 
     if (!updatedRecipe) {
       next(
@@ -60,7 +66,9 @@ recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
     } else {
       res
         .status(200)
-        .send(`The recipe with id ${recipeId} was sucessfully updated!`)
+        .send(
+          `The recipe with id ${recipeId} was sucessfully updated! ${updatedRecipe}`
+        )
     }
   } catch (error) {
     next(error)
@@ -72,9 +80,16 @@ recipesRouter.delete('/:id', JWTAuthMiddleware, async (req, res, next) => {
     const deletedRecipe = await RecipeModel.findByIdAndDelete(recipeId)
 
     if (!deletedRecipe) {
-      next(createError(404, `The recipe with id ${recipeId} was not found to be deleted!`))
+      next(
+        createError(
+          404,
+          `The recipe with id ${recipeId} was not found to be deleted!`
+        )
+      )
     } else {
-      res.status(200).send(`The recipe with id ${recipeId} was sucessfully deleted!`)
+      res
+        .status(200)
+        .send(`The recipe with id ${recipeId} was sucessfully deleted!`)
     }
   } catch (error) {
     next(error)

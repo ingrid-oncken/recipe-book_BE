@@ -5,9 +5,12 @@ import createError from 'http-errors'
 
 const recipesRouter = express.Router()
 
-recipesRouter.post('/', JWTAuthMiddleware, async (req, res, next) => {
+recipesRouter.post('/:userId', JWTAuthMiddleware, async (req, res, next) => {
   try {
+    //console.log(req.user, 'req.user let`s see')
     const newRecipe = new RecipeModel(req.body)
+    newRecipe.user = req.params.userId
+
     const { _id } = await newRecipe.save()
 
     res

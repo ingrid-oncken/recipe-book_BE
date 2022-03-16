@@ -74,7 +74,6 @@ usersRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
 usersRouter.post('/login', async (req, res, next) => {
   try {
     const { email, password } = req.body
-    console.log(`this is req.body ${req.body}`)
     const user = await UserModel.checkCredentials(email, password)
     console.log(user)
 

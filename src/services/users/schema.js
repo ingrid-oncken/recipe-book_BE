@@ -26,7 +26,7 @@ UserSchema.pre('save', async function (next) {
   next()
 })
 
-//I´ll use methods for not showing the password on GET
+//using methods to not show the password on GET
 UserSchema.methods.toJSON = function () {
   const userDocument = this
   const userObject = userDocument.toObject()
@@ -39,7 +39,6 @@ UserSchema.methods.toJSON = function () {
 
 UserSchema.statics.checkCredentials = async function (email, plainPW) {
   const user = await this.findOne({ email })
-  //console.log('XXXXX', user)
 
   if (user) {
     const isMatch = await bcrypt.compare(plainPW, user.password)

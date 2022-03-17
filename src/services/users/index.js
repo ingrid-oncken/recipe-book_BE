@@ -14,7 +14,7 @@ usersRouter.post('/register', async (req, res, next) => {
     res
       .status(201)
       .send(
-        `The new user ${newUser.name.toUpperCase()} ${newUser.surname.toUpperCase()} was created with ID: ${_id}`
+        `The new user ${newUser.firstName.toUpperCase()} ${newUser.surname.toUpperCase()} was created with ID: ${_id}`
       )
   } catch (error) {
     next(error)

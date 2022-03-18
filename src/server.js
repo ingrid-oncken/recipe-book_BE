@@ -44,15 +44,4 @@ mongoose.connection.on('connected', () => {
   })
 })
 
-// server.listen(port, async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_CONNECTION, {
 
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     console.log(`🏃Server running on port 🚪${port} and connected to db`);
-//   } catch (error) {
-//     console.log("DB connection has failed ", error);
-//   }
-// })

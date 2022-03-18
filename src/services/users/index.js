@@ -8,7 +8,9 @@ const usersRouter = express.Router()
 
 usersRouter.post('/register', async (req, res, next) => {
   try {
+    console.log(`this is REQ.BODY inside post users/register ${req.body}`)
     const newUser = new UserModel(req.body)
+    console.log(`this is NEWUSER inside post users/register ${newUser}`)
     const { _id } = await newUser.save()
 
     res

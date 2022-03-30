@@ -1,4 +1,5 @@
 import express from 'express'
+import passport from 'passport'
 import UserModel from './schema.js'
 import createHttpError from 'http-errors'
 import { JWTAuthenticate } from '../../auth/tools.js'
@@ -8,16 +9,10 @@ const usersRouter = express.Router()
 
 usersRouter.post('/register', async (req, res, next) => {
   try {
-    console.log(`this is REQ.BODY inside post users/register ${req.body}`)
     const newUser = new UserModel(req.body)
-    console.log(`this is NEWUSER inside post users/register ${newUser}`)
-    const { _id } = await newUser.save()
+    const user = await newUser.save()
 
-    res
-      .status(201)
-      .send(
-        `The new user ${newUser.firstName.toUpperCase()} ${newUser.surname.toUpperCase()} was created with ID: ${_id}`
-      )
+    res.status(201).send({ newUser })
   } catch (error) {
     next(error)
 
@@ -64,24 +59,35 @@ usersRouter.delete('/me', JWTAuthMiddleware, async (req, res, next) => {
   }
 })
 
-usersRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    const user = await UserModel.findById(req.params.id)
-    res.send(user)
-  } catch (error) {
-    next(error)
+// this route is only getting in touch with google, doesn't need response or anything else
+// because the second route is taking care of it
+usersRouter.get(
+  '/googleLogin',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+)
+usersRouter.get(
+  '/googleRedirect',
+  passport.authenticate('google'),
+  async (req, res, next) => {
+    try {
+      console.log('Redirect ---->')
+      console.log(`clg req.user`, req.user)
+      res.redirect('http://localhost:3000?accessToken=' + req.user.token)
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 usersRouter.post('/login', async (req, res, next) => {
   try {
     const { email, password } = req.body
     const user = await UserModel.checkCredentials(email, password)
-    console.log(user)
+    console.log(`This is the user inside users/login ${user}`)
 
     if (user) {
       const accessToken = await JWTAuthenticate(user)
-      console.log(accessToken)
+      console.log(`This is the access token inside users/login ${accessToken}`)
 
       //frotend will get this token and save on local storage
       res.send({ accessToken })

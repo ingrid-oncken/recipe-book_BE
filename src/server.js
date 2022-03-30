@@ -1,10 +1,12 @@
+import cors from 'cors'
 import express from 'express'
 import mongoose from 'mongoose'
-import cors from 'cors'
+import passport from 'passport'
 import listEndpoints from 'express-list-endpoints'
 import usersRouter from './services/users/index.js'
 import recipesRouter from './services/recipes/index.js'
 
+import GoogleStrategy from './auth/oauth.js'
 import {
   unauthorizedHandler,
   forbidenHandler,
@@ -16,10 +18,13 @@ import {
 const server = express()
 const port = process.env.PORT || 3002
 
+passport.use('google', GoogleStrategy)
+
 //***************** MIDDLEWARE ****************/
 
 server.use(cors())
 server.use(express.json())
+server.use(passport.initialize())
 
 //***************** ROUTES ****************/
 
@@ -43,5 +48,3 @@ mongoose.connection.on('connected', () => {
     console.log(`🏃Server running on port 🚪${port}`)
   })
 })
-
-

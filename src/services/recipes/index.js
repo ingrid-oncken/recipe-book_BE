@@ -7,9 +7,10 @@ const recipesRouter = express.Router()
 
 recipesRouter.post('/:userId', JWTAuthMiddleware, async (req, res, next) => {
   try {
-    //console.log(req.user, 'req.user let`s see')
+    console.log(req.user, 'req.user let`s see')
     const newRecipe = new RecipeModel(req.body)
     newRecipe.user = req.params.userId
+    console.log('newRecipe.user', newRecipe.user)
 
     const { _id } = await newRecipe.save()
 
@@ -23,11 +24,13 @@ recipesRouter.post('/:userId', JWTAuthMiddleware, async (req, res, next) => {
     next(error)
   }
 })
-recipesRouter.get('/', JWTAuthMiddleware, async (req, res, next) => {
+recipesRouter.get('/:userId', JWTAuthMiddleware, async (req, res, next) => {
   try {
-    const recipes = await RecipeModel.find({})
+    const userId = req.params.userId
+    console.log('userId', userId)
+    const recipes = await RecipeModel.find({ user: userId })
 
-    res.status(200).json(recipes)
+    res.status(200).send(recipes)
   } catch (error) {
     console.log(error)
     next(error)

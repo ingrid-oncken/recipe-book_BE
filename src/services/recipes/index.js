@@ -2,28 +2,51 @@ import express from 'express'
 import RecipeModel from './schema.js'
 import { JWTAuthMiddleware } from '../../auth/token.js'
 import createError from 'http-errors'
+import multer from 'multer'
+import { CloudinaryStorage } from 'multer-storage-cloudinary'
 
 const recipesRouter = express.Router()
 
-recipesRouter.post('/:userId', JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    console.log(req.user, 'req.user let`s see')
-    const newRecipe = new RecipeModel(req.body)
-    newRecipe.user = req.params.userId
-    console.log('newRecipe.user', newRecipe.user)
+// const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_SECRET } = process.env
 
-    const { _id } = await newRecipe.save()
+// cloudinary.config({
+//   cloud_name: CLOUDINARY_NAME,
+//   api_key: CLOUDINARY_API_KEY,
+//   api_secret: CLOUDINARY_SECRET,
+// })
 
-    res
-      .status(201)
-      .send(
-        `The new recipe ${newRecipe.recipeTitle.toUpperCase()} was added to the DB with the ID: ${_id}`
-      )
-  } catch (error) {
-    console.log(error)
-    next(error)
+// const cloudinaryStorage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: 'nft-products-mongo',
+//   },
+// })
+
+recipesRouter.post(
+  '/:userId',
+  JWTAuthMiddleware,
+  // multer({ filefilter }).array('recipePictures'),
+  async (req, res, next) => {
+    try {
+      console.log(req.user, 'req.user let`s see')
+      const newRecipe = new RecipeModel(req.body)
+      newRecipe.user = req.params.userId
+      // console.log('newRecipe.user', newRecipe.user)
+      // console.log('USER HERE', req.user)
+
+      const { _id } = await newRecipe.save()
+
+      res
+        .status(201)
+        .send(
+          `The new recipe ${newRecipe.recipeTitle.toUpperCase()} was added to the DB with the ID: ${_id}`
+        )
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
   }
-})
+)
 recipesRouter.get('/:userId', JWTAuthMiddleware, async (req, res, next) => {
   try {
     const userId = req.params.userId

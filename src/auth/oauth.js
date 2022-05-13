@@ -11,7 +11,7 @@ const googleStrategy = new GoogleStrategy(
   },
   async (accessToken, refreshToken, profile, passportNext) => {
     try {
-      console.log(`Receiving profile info from google`, profile)
+      //console.log(`Receiving profile info from google`, profile)
       //is the user in DB ? YES-create token : NO-create new user and then generate token
       const user = await UserModel.findOne({ googleId: profile.id })
 

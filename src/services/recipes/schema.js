@@ -4,17 +4,25 @@ const { Schema, model } = mongoose
 
 const RecipeSchema = new Schema(
   {
-    recipeTitle: { type: String, required: true },
-    authorName: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    recipeTitle: { type: String, required: false },
+    authorName: { type: String, required: false },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: false },
     cathegory: {
       type: String,
       required: false,
-      enum: ['Brekfast', 'Salad', 'Lunch/Dinner', 'Soup', 'Snack', 'Desseart'],
+      enum: [
+        'Cathegory',
+        'Brekfast',
+        'Salad',
+        'Lunch/Dinner',
+        'Soup',
+        'Snack',
+        'Desseart',
+      ],
     },
-    nPortions: { type: Number, required: false },
-    prepTime: { type: Number, required: false },
-    totalTime: { type: Number, required: false },
+    nPortions: { type: String, required: false },
+    prepTime: { type: String, required: false },
+    totalTime: { type: String, required: false },
     prepMethods: [
       {
         type: String,
@@ -63,7 +71,7 @@ const RecipeSchema = new Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: false }
 )
 
 RecipeSchema.methods.toJSON = function () {

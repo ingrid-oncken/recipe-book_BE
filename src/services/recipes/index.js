@@ -34,13 +34,10 @@ recipesRouter.post(
       // console.log('newRecipe.user', newRecipe.user)
       // console.log('USER HERE', req.user)
 
-      const { _id } = await newRecipe.save()
+      //const { _id } = await newRecipe.save()
+      const sendingRecipe = await newRecipe.save()
 
-      res
-        .status(201)
-        .send(
-          `The new recipe ${newRecipe.recipeTitle.toUpperCase()} was added to the DB with the ID: ${_id}`
-        )
+      res.status(201).send(sendingRecipe)
     } catch (error) {
       console.log(error)
       next(error)
@@ -48,9 +45,10 @@ recipesRouter.post(
   }
 )
 recipesRouter.get('/:userId', JWTAuthMiddleware, async (req, res, next) => {
+  console.log('ANYTHING from user id')
   try {
     const userId = req.params.userId
-    console.log('userId', userId)
+    //console.log('userId', userId)
     const recipes = await RecipeModel.find({ user: userId })
 
     res.status(200).send(recipes)
@@ -59,11 +57,18 @@ recipesRouter.get('/:userId', JWTAuthMiddleware, async (req, res, next) => {
     next(error)
   }
 })
+
+// recipesRouter.get('/', function (req, res) {
+//   const recipe = RecipeModel.findById('62693608c346cf192415027f')
+//   res.send(recipe)
+// })
+
 recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
+  console.log('ANYTHING')
   try {
     const recipeId = req.params.id
     const recipe = await RecipeModel.findById(recipeId) //here I can pass a mongo query and find it by ID
-
+    console.log('recipe', recipe)
     if (!recipe) {
       next(createError(404, `The recipe with id ${recipeId} was not found!`))
     } else {

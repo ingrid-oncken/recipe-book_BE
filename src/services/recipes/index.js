@@ -45,7 +45,7 @@ recipesRouter.post(
   }
 )
 recipesRouter.get('/:userId', JWTAuthMiddleware, async (req, res, next) => {
-  console.log('ANYTHING from user id')
+  //console.log('ANYTHING from user id')
   try {
     const userId = req.params.userId
     //console.log('userId', userId)
@@ -58,26 +58,42 @@ recipesRouter.get('/:userId', JWTAuthMiddleware, async (req, res, next) => {
   }
 })
 
-// recipesRouter.get('/', function (req, res) {
-//   const recipe = RecipeModel.findById('62693608c346cf192415027f')
-//   res.send(recipe)
+recipesRouter.get('/', async (req, res) => {
+  const recipe = await RecipeModel.findOne({
+    _id: '62693608c346cf192415027f',
+  }).exec()
+  res.send(recipe)
+})
+
+// recipesRouter.get('/', async (req, res) {
+//   const recipe = await RecipeModel.findOne({_id: '62693608c346cf192415027f'}).exec(function(err, leads){
+//     console.log('recipe from get ONE', recipe)
+//     //res.send(recipe)
+//     res.send(recipe)})
 // })
 
-recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
-  console.log('ANYTHING')
-  try {
-    const recipeId = req.params.id
-    const recipe = await RecipeModel.findById(recipeId) //here I can pass a mongo query and find it by ID
-    console.log('recipe', recipe)
-    if (!recipe) {
-      next(createError(404, `The recipe with id ${recipeId} was not found!`))
-    } else {
-      res.status(200).send(recipe)
-    }
-  } catch (error) {
-    next(error)
-  }
-})
+//findOne({ _id: id })
+
+// router.get('/findByContactName/:surname', function(req, res){
+// Lead.find({"contacts.surname":req.params.name}).exec(function(err, leads){
+// res.send(leads);
+// });
+
+// recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
+//   console.log('ANYTHING')
+//   try {
+//     const recipeId = req.params.id
+//     const recipe = await RecipeModel.findById(recipeId) //here I can pass a mongo query and find it by ID
+//     console.log('recipe', recipe)
+//     if (!recipe) {
+//       next(createError(404, `The recipe with id ${recipeId} was not found!`))
+//     } else {
+//       res.status(200).send(recipe)
+//     }
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {

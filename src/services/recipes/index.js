@@ -44,56 +44,50 @@ recipesRouter.post(
     }
   }
 )
-recipesRouter.get('/:userId', JWTAuthMiddleware, async (req, res, next) => {
-  //console.log('ANYTHING from user id')
-  try {
-    const userId = req.params.userId
-    //console.log('userId', userId)
-    const recipes = await RecipeModel.find({ user: userId })
+recipesRouter.get(
+  '/user/:userId',
+  JWTAuthMiddleware,
+  async (req, res, next) => {
+    //console.log('ANYTHING from user id')
+    try {
+      const userId = req.params.userId
+      //console.log('userId', userId)
+      const recipes = await RecipeModel.find({ user: userId })
 
-    res.status(200).send(recipes)
+      res.status(200).send(recipes)
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
+  }
+)
+
+// recipesRouter.get('/:id', async (req, res) => {
+//   const recipeId = req.params.id
+//   console.log('recipeId', recipeId)
+
+//   const recipe = await RecipeModel.findOne({
+//     _id: recipeId,
+//   }).exec()
+//   res.send(recipe)
+// })
+
+recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
+  try {
+    const recipeId = req.params.id
+    const recipe = await RecipeModel.findOne({
+      _id: recipeId,
+    }).exec() //here I can pass a mongo query and find it by ID
+
+    if (!recipe) {
+      next(createError(404, `The recipe with id ${recipeId} was not found!`))
+    } else {
+      res.status(200).send(recipe)
+    }
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })
-
-recipesRouter.get('/', async (req, res) => {
-  const recipe = await RecipeModel.findOne({
-    _id: '62693608c346cf192415027f',
-  }).exec()
-  res.send(recipe)
-})
-
-// recipesRouter.get('/', async (req, res) {
-//   const recipe = await RecipeModel.findOne({_id: '62693608c346cf192415027f'}).exec(function(err, leads){
-//     console.log('recipe from get ONE', recipe)
-//     //res.send(recipe)
-//     res.send(recipe)})
-// })
-
-//findOne({ _id: id })
-
-// router.get('/findByContactName/:surname', function(req, res){
-// Lead.find({"contacts.surname":req.params.name}).exec(function(err, leads){
-// res.send(leads);
-// });
-
-// recipesRouter.get('/:id', JWTAuthMiddleware, async (req, res, next) => {
-//   console.log('ANYTHING')
-//   try {
-//     const recipeId = req.params.id
-//     const recipe = await RecipeModel.findById(recipeId) //here I can pass a mongo query and find it by ID
-//     console.log('recipe', recipe)
-//     if (!recipe) {
-//       next(createError(404, `The recipe with id ${recipeId} was not found!`))
-//     } else {
-//       res.status(200).send(recipe)
-//     }
-//   } catch (error) {
-//     next(error)
-//   }
-// })
 
 recipesRouter.put('/:id', JWTAuthMiddleware, async (req, res, next) => {
   try {
